@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import axios from "axios";
-import { NavLink, Route } from 'react-router-dom';
+import { Route, NavLink } from "react-router-dom";  // added import
+import axios from "axios";  // added import
 
 import './App.css';
 import SmurfForm from './components/SmurfForm';
@@ -13,12 +13,12 @@ const url = new URL('http://localhost:3333/smurfs/')
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = { 
       smurfs: [],
     };
   }
-  // add any needed code to ensure that the smurfs collection e
-  //xists on state and it has data coming from the server
+  // add any needed code to ensure that the smurfs collection
+  //exists on state and it has data coming from the server
   // Notice what your map function is looping over and returning 
   //inside of Smurfs.
   // You'll need to make sure you have the right properties on 
@@ -26,47 +26,50 @@ class App extends Component {
 
   componentDidMount() {
     axios
-    .get(url)  // MVP - GET to the endpoint /smurfs
+    .get(url)  // MVP GET - grab data from API
     .then(response => {
-      console.log(response.data);
       this.setState({
         smurfs: response.data
       })
     })
-    .catch(err => console.log(err))
   }
 
+  // axios requests
   addSmurf = data => {
     axios
-    .post(url, data)  // MVP - POST add Smurf to DB
+    .post(url, data)  // MVP POST 
     .then(response => {
-      console.log(response);
       this.setState({
         smurfs: response.data
       })
     })
-    .catch(err => console.log(err))
   }
+
+  deleteSmurf = id => {  // STRETCH DELETE
+    axios
+    .delete(`${url} ${id}`)
+    .then(response => {
+      this.setState({
+        smurfs: response.data
+      })
+    })
+  }
+
 
   render() {
     return (
-      <div className="App">
-      <navBar>
-        <NavLink to='/'>Home</NavLink>
-        <NavLink to='/smurf-form'>Form</NavLink>
-      </navBar>
-      <Route 
-        exact path='/'
-        render={props => <Smurfs smurfs={this.state.smurfs} {...props} />}
-        />
-        <Route path='/smurf-form' 
-        render={props => <SmurfForm addSmurf={this.addSmurf} {...props} />}
-        />
+      <div className="App">  
+        {/* MVP NAVIGATION */}
+        <nav>    
+          <NavLink to='/'>Home</NavLink>{' '}
+          <NavLink to='/smurf-form'>Form</NavLink>
+        </nav>
+        {/* MVP ROUTES */}
+        <Route exact path='/' render={props => <Smurfs smurfs={this.state.smurfs} deleteSmurf={this.deleteSmurf} {...props} />}/>
+        <Route path='/smurf-form' render={props => <SmurfForm addSmurf={this.addSmurf} {...props} />}/>
       </div>
     );
   }
 }
-
-//initial commit
 
 export default App;
