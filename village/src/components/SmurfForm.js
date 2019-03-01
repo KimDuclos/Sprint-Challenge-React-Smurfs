@@ -21,6 +21,12 @@ class SmurfForm extends Component {
     });
   }
 
+  // allow input to change and add to api
+  submitChange = e => {
+    e.preventDefault();
+    this.props.addSmurf(this.state);
+}
+
   handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
