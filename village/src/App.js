@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import axios from "axios";
+import { NavLink, Route } from 'react-router-dom';
 
 import './App.css';
 import SmurfForm from './components/SmurfForm';
 import Smurfs from './components/Smurfs';
+
 
 // set URL for data source
 const url = new URL('http://localhost:3333/smurfs/')
@@ -49,8 +51,17 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <SmurfForm />
-        <Smurfs smurfs={this.state.smurfs} />
+      <navBar>
+        <NavLink to='/'>Home</NavLink>
+        <NavLink to='/smurf-form'>Form</NavLink>
+      </navBar>
+      <Route 
+        exact path='/'
+        render={props => <Smurfs smurfs={this.state.smurfs} {...props} />}
+        />
+        <Route path='/smurf-form' 
+        render={props => <SmurfForm addSmurf={this.addSmurf} {...props} />}
+        />
       </div>
     );
   }
