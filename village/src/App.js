@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from "axios";
 
 import './App.css';
 import SmurfForm from './components/SmurfForm';
@@ -30,7 +31,19 @@ class App extends Component {
         smurfs: response.data
       })
     })
-    .catch(err = console.log(err))
+    .catch(err => console.log(err))
+  }
+
+  addSmurf = data => {
+    axios
+    .post(url, data)  // MVP - POST add Smurf to DB
+    .then(response => {
+      console.log(response);
+      this.setState({
+        smurfs: response.data
+      })
+    })
+    .catch(err => console.log(err))
   }
 
   render() {
